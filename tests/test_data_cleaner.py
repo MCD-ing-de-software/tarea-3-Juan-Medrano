@@ -132,7 +132,10 @@ class TestDataCleaner(unittest.TestCase):
         for i in range(n):
             i1 = df["name"].tolist()[i]
             i2 = make_sample_df()["name"].tolist()[i]
-            self.assertEqual(i1, i2)
+            if not pd.isna(i1) and not pd.isna(i2):
+                self.assertEqual(i1, i2)
+            else:
+                self.assertEqual(pd.isna(i1), pd.isna(i2))
         ## d: Verificar que en el DataFrame resultante los valores de "name" no tienen espacios al inicio/final (usar self.assertEqual para comparar valores específicos como strings individuales - unittest es suficiente)
         n = len(df["name"])
         for i in range(n):
@@ -180,7 +183,7 @@ class TestDataCleaner(unittest.TestCase):
         ## d: Verificar que al menos uno de los valores no extremos (25 o 35) permanece en el resultado (usar self.assertIn para verificar que está presente)
         vs = [25, 35]
         for i in vs:
-            self.assertIn(i, w.age)
+            self.assertIn(i, w["age"].tolist())
 
     def test_remove_outliers_iqr_raises_keyerror_for_missing_column(self):
         """Test que verifica que el método remove_outliers_iqr lanza un KeyError cuando
