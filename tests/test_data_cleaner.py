@@ -122,6 +122,25 @@ class TestDataCleaner(unittest.TestCase):
         - Verificar que en el DataFrame resultante los valores de "name" no tienen espacios al inicio/final (usar self.assertEqual para comparar valores específicos como strings individuales - unittest es suficiente)
         - Verificar que las columnas no especificadas (ej: "city") permanecen sin cambios (si comparas Series completas, usar pandas.testing.assert_series_equal() ya que maneja mejor los índices y tipos de Pandas; si comparas valores individuales, self.assertEqual es suficiente)
         """
+        ## a: Crear un DataFrame con espacios en blanco usando make_sample_df()
+        df = make_sample_df()
+        ## b: Llamar a trim_strings con la columna "name"
+        x = DataCleaner()
+        w = x.trim_strings(df, ["name"])
+        ## c: Verificar que el DataFrame original no fue modificado (mantiene los espacios) (usar self.assertEqual para comparar valores específicos como strings individuales - unittest es suficiente para strings)
+        n = len(df["name"])
+        for i in range(n):
+            i1 = df["name"].tolist()[i]
+            i2 = make_sample_df()["name"].tolist()[i]
+            self.assertEqual(i1, i2)
+        ## d: Verificar que en el DataFrame resultante los valores de "name" no tienen espacios al inicio/final (usar self.assertEqual para comparar valores específicos como strings individuales - unittest es suficiente)
+        n = len(df["name"])
+        for i in range(n):
+            i1 = w["name"].tolist()[i]
+            if isinstance(i1, str):
+                self.assertEqual(i1, i1.strip())
+        ## e: Verificar que las columnas no especificadas (ej: "city") permanecen sin cambios (si comparas Series completas, usar pandas.testing.assert_series_equal() ya que maneja mejor los índices y tipos de Pandas; si comparas valores individuales, self.assertEqual es suficiente)
+        pd.testing.assert_series_equal(w.city, df.city)
 
     def test_trim_strings_raises_typeerror_for_non_string_column(self):
         """Test que verifica que el método trim_strings lanza un TypeError cuando
