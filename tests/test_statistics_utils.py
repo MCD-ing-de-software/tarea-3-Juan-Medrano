@@ -60,12 +60,13 @@ class TestStatisticsUtils(unittest.TestCase):
         v = [1, 2, 3, 4]
         ## b: Llamar a moving_average con window=2
         w = StatisticsUtils()
-        v = w.moving_average(arr = v, window = 2)
+        x = w.moving_average(arr = v, window = 2)
         ## c: Verificar que el resultado es correcto (ej: [1.5, 2.5, 3.5] para el array dado) (usar numpy.testing.assert_allclose() para comparar arrays de NumPy - esto es mejor que unittest porque maneja la comparación de arrays numéricos con tolerancia para errores de punto flotante)
         z = [1.5, 2.5, 3.5]
-        np.testing.assert_allclose(v, z)
+        np.testing.assert_allclose(x, z)
         ## d: Verificar que el resultado tiene la forma (shape) esperada (usar self.assertEqual para comparar tuplas de .shape - comparación simple, unittest es suficiente)
-        self.assertEqual(v, z)
+        #self.assertEqual(v, z)
+        self.assertEqual(x.shape, (3,))
 
     def test_moving_average_raises_for_invalid_window(self):
         """Test que verifica que el método moving_average lanza un ValueError cuando
