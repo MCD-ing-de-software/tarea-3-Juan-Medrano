@@ -151,6 +151,13 @@ class TestDataCleaner(unittest.TestCase):
         - Llamar a trim_strings con una columna numérica (ej: "age")
         - Verificar que se lanza un TypeError (usar self.assertRaises)
         """
+        ## a: Crear un DataFrame usando make_sample_df()
+        df = make_sample_df()
+        ## b: Llamar a trim_strings con una columna numérica (ej: "age")
+        ## c: Verificar que se lanza un TypeError (usar self.assertRaises)
+        x = DataCleaner()
+        with self.assertRaises(TypeError):
+            x.trim_strings(df, ["age"])
 
     def test_remove_outliers_iqr_removes_extreme_values(self):
         """Test que verifica que el método remove_outliers_iqr elimina correctamente los
